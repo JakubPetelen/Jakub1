@@ -3,10 +3,11 @@
 import Typography from '@mui/material/Typography';
 import Container  from "@mui/material/Container";
 
-export default function Home() {
+export default function About() {
+  
   return (
   <Container>
-    <Typography> Homepage </Typography>
+    <Typography> About Page</Typography>
   </Container>
   );
     

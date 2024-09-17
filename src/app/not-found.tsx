@@ -1,13 +1,13 @@
-// src/app/podmienky/page.tsx
+// src/app/not-found.tsx
 
 import Typography from '@mui/material/Typography';
 import Box from "@mui/material/Container";
 
 
-export default function TermsConditions() {
+export default function NotFound() {
   return (
   <Box>
-    <Typography> Terms and conditions page</Typography>
+    <Typography> Error tu je</Typography>
   </Box>
   );
     
