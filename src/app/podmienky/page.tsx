@@ -5,7 +5,7 @@ import Container  from "@mui/material/Container";
 
 export default function TermsConditions() {
   return (
-  <Typography> About Page</Typography>
+  <Typography> Terms and conditions page</Typography>
   );
     
 }
