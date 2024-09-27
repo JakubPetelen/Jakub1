@@ -1,4 +1,3 @@
-
 // src/app/(home)/page.tsx
 
 import Typography from '@mui/material/Typography';
