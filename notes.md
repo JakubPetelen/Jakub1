@@ -1,31 +1,33 @@
 npx create-next-app@latest
+Inštalácia NextJS cez terminál (npx = node package execute)
 
-ls
+ls # linux, vypíše obsah dir (list)
 
-cd Dokumenty/dev
+cd
+linux, presmeruje do dir (change directory)
+
+cd .. # o úroveň vyššie
 
 npm run dev
+spustí kód cez terminál
 
 git init
+inicializovanie git v projekte
 
 git branch -m main
+spraví main branch na githube
 
-git config --global user.name "Jakub Petelen"
+git config –global user.name/user.email
 
-git config --global user.email "petelen@outlook.com"
+git remote add origin url
+prepojí git s githubom
 
-git remote add origin https://github.com/JakubPetelen/Jakub1.git
+git remote -v # skontroluje prepojenie
 
-git remote -v
+NextJS – files stránkok sa musia volať page.tsx, ak nie je v app dir, tak musí byť v dir, ktorý ma meno v () globals.css musí existovať
 
-cd ..
+not-found.tsx musí byť v app dir, overridene defaultnu page 404
 
-git add .
+find . -path './.next' -prune -o -path './node_modules' -prune -o -path './.git' -prune -o -print | sed -e "s/[^\/]*// |/g" -e "s/|([^ ])/|-\1/"
 
-git commit -m "Initial commit"
- 
-git push -u origin main
-
---smerovanie na jednotlive stranky je robeny po priecinkoch a vzdy to musi byt v app
-
-npm run build
+^vypise vsetky folders a files okrem .next, node_modules, .git
