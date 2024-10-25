@@ -6,17 +6,17 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function SignUpView() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
     // Redirect to the home page if already signed up (authenticated)
-    if (status === "authenticated") {
+    if (session) {
       router.push("/");
     }
-  }, [status, router]);
+  }, [session, router]);
 
-  if (status === "loading") {
+  if (!session) {
     return <p>Loading...</p>;
   }
 

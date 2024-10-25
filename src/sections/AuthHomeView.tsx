@@ -1,10 +1,11 @@
 // src/sections/AuthHomeView.tsx
-export default function AuthHomeView({ session }: { session: any }) {
+import { Session } from "next-auth"; // Import the Session type
+
+export default function AuthHomeView({ session }: { session: Session }) {
     return (
-      <div>
-        <h1>Welcome, {session.user?.name}!</h1>
-        <p>You are now signed in.</p>
-      </div>
+        <div>
+            <h1>Welcome, {session.user?.name}!</h1>
+            <p>You are now signed in.</p>
+        </div>
     );
-  }
-  
+}
