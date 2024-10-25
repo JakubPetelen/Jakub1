@@ -1,12 +1,13 @@
-//src/app/layout.tsx
+// src/app/layout.tsx
 
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import "./globals.css";
-import SimpleBottomNavigation from "@/components/NavBar"; // Import the BottomNavigation component
+import Navbar from "@/components/NavBar";
+import AuthProvider from "../components/AuthProvider";
 
 export const metadata: Metadata = {
-  title: "KuboZoska",
-  description: "Created by Jakub Petelen",
+  title: "SnapZoška",
+  description: "Created by Jakub Petelen, SPŠE Zochova 9, Bratislava",
 };
 
 export default function RootLayout({
@@ -17,8 +18,14 @@ export default function RootLayout({
   return (
     <html lang="sk">
       <body>
-        {children}
-        <SimpleBottomNavigation /> {/* Add the BottomNavigation here */}
+        <AuthProvider>
+          <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            <main style={{ flexGrow: 1 }}>
+              {children}
+            </main>
+          </div>
+          <Navbar /> 
+        </AuthProvider>
       </body>
     </html>
   );
