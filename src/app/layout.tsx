@@ -6,8 +6,8 @@ import Navbar from "@/components/NavBar";
 import AuthProvider from "../components/AuthProvider";
 
 export const metadata: Metadata = {
-  title: "SnapZoška",
-  description: "Created by Jakub Petelen, SPŠE Zochova 9, Bratislava",
+  title: "ZoskaSnap",
+  description: "Webstránka Jakuba Petelena.",
 };
 
 export default function RootLayout({

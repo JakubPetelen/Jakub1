@@ -1,27 +1,37 @@
-// src/app/(home)/page.tsx
-import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/authOptions";
-import AuthHomeView from "@/sections/AuthHomeView";
-import NonAuthHomeView from "@/sections/NonAuthHomeView";
+// src/app/(home)
+"use client";
 
-export const metadata = { title: "Domov | ZoškaSnap" };
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box'
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-export default async function HomePage() {
-  try {
-    // Fetch the session using getServerSession for server-side rendering
-    const session = await getServerSession(authOptions);
+//export const metadata = { title: 'Domovská stránka | KamNaKavu'};
 
-    // Check if the user is authenticated
-    if (!session) {
-      // If not authenticated, render the NonAuthHomeView
-      return <NonAuthHomeView />;
+export default function Home() {
+  const { data: session} = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (session) {
+      // Redirect to '/prispevky' after session is available
+      router.push('/prispevok');
     }
-
-    // If authenticated, render the AuthHomeView with the session data
-    return <AuthHomeView session={session} />;
-  } catch (error) {
-    // Handle any errors while fetching the session
-    console.error("Error fetching session:", error);
-    return <NonAuthHomeView />;
+  }, [session, router]);
+  if (!session) {
+    return (
+      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" minHeight="100vh">
+        <Typography variant="h3" align="center"><strong>Neprihlásený</strong> používateľ</Typography>
+        <Typography variant="h5" align="center">ak chceš pokračovať, prosím <strong>prihlás sa</strong> alebo si <strong>sprav účet</strong> na našej stránke.</Typography>
+      </Box>        
+      );
   }
-}
+      
+  return (
+    <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" minHeight="100vh">
+      <Typography variant="h3" align="center">Vitaj, {session?.user?.name}</Typography>
+      <Typography variant="h5" align="center">Váš email je: {session?.user?.email}</Typography>
+    </Box>  
+  );
+    }
