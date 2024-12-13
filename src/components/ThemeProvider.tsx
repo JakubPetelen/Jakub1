@@ -1,13 +1,13 @@
 // src/components/ThemeProvider.tsx
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
 import { createTheme, ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import { useLocalStorage } from "usehooks-ts"; // Optional: for saving dark mode preference across sessions
 
 const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [darkMode, setDarkMode] = useLocalStorage<boolean>("darkMode", false); // Save dark mode state
+  const [darkMode] = useLocalStorage<boolean>("darkMode", false); // Save dark mode state
   const theme = useMemo(() => {
     return createTheme({
       palette: {
