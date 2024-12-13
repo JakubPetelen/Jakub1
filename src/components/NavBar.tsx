@@ -1,50 +1,61 @@
 'use client';
 
-import React from 'react';
-import Box from '@mui/material/Box';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import PersonIcon from '@mui/icons-material/Person';
+import React, { useState, useEffect } from 'react';
+import { Box, BottomNavigation, BottomNavigationAction, IconButton } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import SearchIcon from '@mui/icons-material/Search';
+import InfoIcon from '@mui/icons-material/Info';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import HomeIcon from '@mui/icons-material/Home';
-import InfoIcon from '@mui/icons-material/Info';
-import SearchIcon from '@mui/icons-material/Search';
-import GavelIcon from '@mui/icons-material/Gavel';
-import LogoutIcon from '@mui/icons-material/Logout';
-import AddIcon from '@mui/icons-material/Add';
-import { useSession, signOut } from 'next-auth/react'; // Added `signOut` for logout
+import Brightness4Icon from '@mui/icons-material/Brightness4'; // Moon icon for night mode
+import { useSession, signOut } from 'next-auth/react'; // For authentication
 import { useRouter } from 'next/navigation';
 
-export default function Navbar() {
+// Declare that Navbar expects setDarkMode as a prop
+interface NavbarProps {
+  setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ setDarkMode }) => {
   const { data: session } = useSession();
-  const [value, setValue] = React.useState('/');
+  const [value, setValue] = useState('/');
+  const [darkMode, setDarkModeState] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('darkMode');
+    if (storedTheme) {
+      setDarkModeState(storedTheme === 'true');
+    }
+  }, []);
+
+  const handleDarkModeToggle = () => {
+    const newMode = !darkMode;
+    setDarkModeState(newMode);
+    setDarkMode(newMode);  // Update parent state
+    localStorage.setItem('darkMode', newMode.toString());
+  };
 
   const handleNavigation = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
-
-    // Custom handling for Logout
     if (newValue === '/auth/odhlasenie') {
-      signOut(); // Triggers the logout flow
+      signOut();
     } else {
-      router.push(newValue); // Navigate to the selected route
+      router.push(newValue);
     }
   };
 
-  // Navigation items
   const navItems = session
     ? [
         { label: 'Domov', icon: <HomeIcon />, value: '/' },
         { label: 'Hľadať', icon: <SearchIcon />, value: '/hladanie' },
-        { label: 'Profily', icon: <PersonIcon />, value: '/profil' },
-        { label: 'Pridať', icon: <AddIcon />, value: '/pridat' },
-        { label: 'Odhlásiť', icon: <LogoutIcon />, value: '/auth/odhlasenie' },
+        { label: 'Profily', icon: <InfoIcon />, value: '/profil' },
+        { label: 'Pridať', icon: <PersonAddIcon />, value: '/pridat' },
+        { label: 'Odhlásiť', icon: <LoginIcon />, value: '/auth/odhlasenie' },
       ]
     : [
         { label: 'Domov', icon: <HomeIcon />, value: '/' },
         { label: 'O mne', icon: <InfoIcon />, value: '/o-mne' },
-        { label: 'GDPR', icon: <GavelIcon />, value: '/gdpr' },
         { label: 'Prihlásenie', icon: <LoginIcon />, value: '/auth/prihlasenie' },
         { label: 'Registrácia', icon: <PersonAddIcon />, value: '/auth/registracia' },
       ];
@@ -64,11 +75,11 @@ export default function Navbar() {
         value={value}
         onChange={handleNavigation}
         sx={{
-          backgroundColor: 'background.paper',
+          backgroundColor: darkMode ? '#333' : 'background.paper',
           '& .MuiBottomNavigationAction-root': {
-            color: 'text.secondary',
+            color: darkMode ? 'white' : 'text.secondary',
             '&.Mui-selected': {
-              color: 'primary.main',
+              color: '#d32f2f', // Red color for selected nav items
             },
           },
         }}
@@ -78,7 +89,7 @@ export default function Navbar() {
             key={item.label}
             label={item.label}
             icon={item.icon}
-            value={item.value} // Ensure each item has a `value`
+            value={item.value}
             sx={{
               minWidth: 'auto',
               padding: '6px 12px',
@@ -86,7 +97,12 @@ export default function Navbar() {
             }}
           />
         ))}
+        <IconButton onClick={handleDarkModeToggle} sx={{ position: 'absolute', right: 10, top: 10 }}>
+          <Brightness4Icon sx={{ color: darkMode ? 'white' : 'black' }} />
+        </IconButton>
       </BottomNavigation>
     </Box>
   );
-}
+};
+
+export default Navbar;
