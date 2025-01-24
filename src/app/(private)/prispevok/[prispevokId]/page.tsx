@@ -1,18 +1,14 @@
-// src/app/prispevok/page.tsx
+// src/app/(private)/prispevok/[prispevokId]/page.tsx
+'use client';
 
-import Typography from '@mui/material/Typography';
+import { Typography } from '@mui/material';
 
-export const metadata = { title: 'Príspevok | ZoskaSnap'};
-
-export default function PostDetail({
-  params,
-
-}: {
-  params: {
-    prispevokId: string;
-  }
-}) {
+export default function PostPlaceholder() {
   return (
-    <Typography>Príspevok {params.prispevokId}</Typography>
+    <div>
+      <Typography variant="h4" align="center">
+        Post Details Placeholder
+      </Typography>
+    </div>
   );
 }
