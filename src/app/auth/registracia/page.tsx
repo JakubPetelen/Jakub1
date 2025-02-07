@@ -77,7 +77,7 @@ export default function SignUpPage() {
           label={
             <Typography variant="body2">
               Súhlasím s{' '}
-              <MuiLink href="/gdpr" target="_blank" sx={{ textDecoration: 'underline', color: 'red' }}>
+              <MuiLink href="/gdpr" target="_self" sx={{ textDecoration: 'underline', color: 'red' }}>
                 GDPR podmienkami
               </MuiLink>
             </Typography>
@@ -85,15 +85,14 @@ export default function SignUpPage() {
           sx={{ marginBottom: 2 }}
         />
 
+        {/* Button is always red, no opacity changes */}
         <Button
           variant="contained"
-          color="error"
+          color="error" // Always red
           onClick={handleGoogleSignUp}
           sx={{
             marginTop: 2,
             borderRadius: '8px',
-            opacity: gdprAgreed ? 1 : 0.3, // Low opacity when GDPR is not agreed
-            pointerEvents: gdprAgreed ? 'auto' : 'none', // Disable button when GDPR is not agreed
           }}
         >
           Registrovať sa pomocou Google

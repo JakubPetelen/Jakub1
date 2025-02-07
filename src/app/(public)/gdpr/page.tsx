@@ -1,19 +1,27 @@
 'use client'; // Ensures this page is rendered as a client component
 
-import { Box, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { Box, Typography, Button } from '@mui/material';
 
 export default function GdprPage() {
+  const router = useRouter();
+
+  const handleBackClick = () => {
+    router.back(); // Navigate to the previous page
+  };
+
   return (
     <Box
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'flex-start', // Ensure content is aligned to the top
         alignItems: 'center',
-        minHeight: '100vh',
+        minHeight: '100vh', // Still ensures full height for the page
         textAlign: 'center',
         padding: 2,
         backgroundColor: 'background.default', // Ensure background is the same as app theme
+        overflowY: 'auto', // Allow scrolling if content overflows
       }}
     >
       <Box
@@ -86,13 +94,24 @@ export default function GdprPage() {
           Používame vhodné technické a organizačné opatrenia na ochranu vašich osobných údajov pred neoprávneným prístupom, zmenami, zverejnením alebo zničením.
         </Typography>
 
-        <Typography variant="body1" sx={{ marginBottom: 3 }}>
+        <Typography variant="body1" sx={{ marginBottom: 2 }}>
           <strong>7. Kontaktujte nás</strong>
           <br />
           Ak máte akékoľvek otázky alebo obavy týkajúce sa tejto politiky ochrany osobných údajov alebo našich praktík spracovania údajov, neváhajte nás kontaktovať na:
           <br />
-          [Vaše kontaktné informácie]
         </Typography>
+
+        <Button
+          variant="contained"
+          color="error"
+          onClick={handleBackClick}
+          sx={{
+            marginTop: 1, // Reduced marginTop to move the button higher
+            marginBottom: 3, // Added marginBottom to create space below the button
+          }}
+        >
+          Späť
+        </Button>
       </Box>
     </Box>
   );
