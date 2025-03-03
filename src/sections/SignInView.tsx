@@ -13,7 +13,19 @@ export default function SignInView() {
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
       <Box sx={{display:"flex", flexDirection:"column", alignItems:"center", height:"100%", bgcolor:"#ebebeb", padding:"4%", gap:2, borderRadius:"5px"}}>
         <Typography variant="h5"><strong>Prihlásiť sa</strong></Typography>
-        <Button variant='contained' startIcon={<GoogleIcon />} onClick={() => signIn("google")}>Prihlásiť sa pomocou Google</Button>
+        <Button 
+          variant='contained' 
+          startIcon={<GoogleIcon />} 
+          onClick={() => signIn("google")}
+          sx={{
+            backgroundColor: '#D32F2F',
+            '&:hover': {
+              backgroundColor: '#D32F2F',
+            },
+          }}
+        >
+          Prihlásiť sa pomocou Google
+        </Button>
       </Box>
       
     </Box>

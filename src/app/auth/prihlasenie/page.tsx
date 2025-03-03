@@ -1,19 +1,42 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Typography, Box, Link as MuiLink, Checkbox, FormControlLabel } from '@mui/material';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function SignInPage() {
   const [gdprAgreed, setGdprAgreed] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const { status } = useSession();
 
-  const handleGoogleSignIn = () => {
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/prispevok');
+      router.refresh();
+    }
+  }, [status, router]);
+
+  const handleGoogleSignIn = async () => {
     if (!gdprAgreed) {
-      alert('Musíte súhlasiť s GDPR podmienkami.');
+      setError('Musíte súhlasiť s GDPR podmienkami.');
       return;
     }
-    signIn('google'); // Use Google authentication
+    setError(null);
+    try {
+      const result = await signIn('google', {
+        callbackUrl: '/prispevok',
+        redirect: true
+      });
+    } catch (error) {
+      console.error('Sign in error:', error);
+    }
   };
+
+  if (status === 'authenticated') {
+    return null;
+  }
 
   return (
     <Box
@@ -46,55 +69,76 @@ export default function SignInPage() {
         </Typography>
 
         <Typography variant="body1" sx={{ marginBottom: 2 }}>
-          Prihláste sa pomocou Google kliknutím na tlačidlo nižšie alebo{' '}
+          Ak nemáte účet,{' '}
           <MuiLink
             component="button"
             variant="body1"
-            onClick={handleGoogleSignIn}
+            onClick={() => router.push('/auth/registracia')}
             sx={{
-              color: 'red',
+              color: '#D32F2F',
               textDecoration: 'underline',
               cursor: 'pointer',
               '&:hover': {
-                color: '#d32f2f',
+                color: '#D32F2F',
               },
             }}
           >
             kliknite sem
           </MuiLink>
-          .
+          {' '}na registráciu.
         </Typography>
 
-        {/* GDPR Checkbox */}
+        {error && (
+          <Typography 
+            color="error" 
+            sx={{ 
+              mb: 2,
+              backgroundColor: 'rgba(211, 47, 47, 0.1)',
+              padding: '8px 16px',
+              borderRadius: '4px',
+              width: '100%'
+            }}
+          >
+            {error}
+          </Typography>
+        )}
+
         <FormControlLabel
           control={
             <Checkbox
               checked={gdprAgreed}
-              onChange={(e) => setGdprAgreed(e.target.checked)}
+              onChange={(e) => {
+                setGdprAgreed(e.target.checked);
+                setError(null);
+              }}
               color="primary"
             />
           }
           label={
-            <Typography variant="body2">
+            <Typography variant="body2" color="text.secondary">
               Súhlasím s{' '}
-              <MuiLink href="/gdpr" target="_self" sx={{ textDecoration: 'underline', color: 'red' }}>
+              <MuiLink href="/gdpr" target="_self" sx={{ textDecoration: 'underline', color: '#D32F2F' }}>
                 GDPR podmienkami
               </MuiLink>
             </Typography>
           }
+          sx={{ marginBottom: 2 }}
         />
 
-        {/* Button is always red, no opacity changes */}
         <Button
           variant="contained"
-          color="error" // Always red
           onClick={handleGoogleSignIn}
           sx={{
+            backgroundColor: '#D32F2F',
+            color: 'white',
+            '&:hover': {
+              backgroundColor: '#D32F2F',
+            },
             marginTop: 2,
             borderRadius: '8px',
           }}
         >
-          Prihlásiť sa pomocou Google
+          Prihlásiť sa cez Google
         </Button>
       </Box>
     </Box>

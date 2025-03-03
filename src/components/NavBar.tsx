@@ -39,7 +39,7 @@ const Navbar: React.FC<NavbarProps> = ({ setDarkMode }) => {
   const handleNavigation = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
     if (newValue === '/auth/odhlasenie') {
-      signOut();
+      signOut({ callbackUrl: '/' });
     } else {
       router.push(newValue);
     }

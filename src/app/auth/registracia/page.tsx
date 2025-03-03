@@ -1,19 +1,36 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Typography, Box, Link as MuiLink, Checkbox, FormControlLabel } from '@mui/material';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function SignUpPage() {
   const [gdprAgreed, setGdprAgreed] = useState(false);
+  const router = useRouter();
+  const { status } = useSession();
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/prispevok');
+      router.refresh();
+    }
+  }, [status, router]);
 
   const handleGoogleSignUp = () => {
     if (!gdprAgreed) {
       alert('Musíte súhlasiť s GDPR podmienkami.');
       return;
     }
-    signIn('google'); // Use Google authentication
+    signIn('google', {
+      callbackUrl: '/prispevok',
+      redirect: true
+    });
   };
+
+  if (status === 'authenticated') {
+    return null;
+  }
 
   return (
     <Box

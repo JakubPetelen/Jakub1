@@ -14,7 +14,13 @@ export default function SignOutView() {
     <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
       <Box sx={{display:"flex", flexDirection:"column", alignItems:"center", height:"100%", bgcolor:"#ebebeb", padding:"4%", gap:2, borderRadius:"5px"}}>
         <Typography variant="h5"><strong>Naozaj sa chcete odhlásiť?</strong></Typography>
-        <Button variant='contained' startIcon={<ExitToAppIcon />} onClick={() => signOut()}>Odhlásiť sa</Button>
+        <Button 
+          variant='contained' 
+          startIcon={<ExitToAppIcon />} 
+          onClick={() => signOut({ callbackUrl: '/' })}
+        >
+          Odhlásiť sa
+        </Button>
       </Box>
     </Box>
   );
