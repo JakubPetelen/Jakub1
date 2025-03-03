@@ -3,6 +3,24 @@
 import { db } from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 
+interface User {
+  id: string;
+  name: string | null;
+  image: string | null;
+  profile?: {
+    bio: string | null;
+    location: string | null;
+  } | null;
+  posts?: Post[];
+}
+
+interface Post {
+  id: string;
+  imageUrl: string;
+  caption: string | null;
+  createdAt: Date;
+}
+
 export async function testDbConnection() {
   try {
     // Test user count
@@ -54,7 +72,7 @@ export async function searchProfiles(searchQuery: string) {
       take: 10
     });
 
-    const profiles = users.map(user => ({
+    const profiles = users.map((user: User) => ({
       id: user.id,
       userId: user.id,
       bio: user.profile?.bio || null,
@@ -98,7 +116,7 @@ export async function getProfileById(userId: string) {
       bio: user.profile?.bio || null,
       location: user.profile?.location || null,
       interests: user.profile?.interests || [],
-      posts: user.posts.map(post => ({
+      posts: user.posts.map((post: Post) => ({
         id: post.id,
         imageUrl: post.imageUrl,
         caption: post.caption,

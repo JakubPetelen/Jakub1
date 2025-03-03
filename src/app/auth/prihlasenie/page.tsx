@@ -25,7 +25,7 @@ export default function SignInPage() {
     }
     setError(null);
     try {
-      const result = await signIn('google', {
+      await signIn('google', {
         callbackUrl: '/prispevok',
         redirect: true
       });

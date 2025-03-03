@@ -67,7 +67,7 @@ export default function SignUpPage() {
           <MuiLink
             component="button"
             variant="body1"
-            onClick={handleGoogleSignUp}
+            onClick={() => router.push('/auth/prihlasenie')}
             sx={{
               color: 'red',
               textDecoration: 'underline',
