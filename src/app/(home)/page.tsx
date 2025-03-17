@@ -3,9 +3,18 @@
 import { useSession } from "next-auth/react";
 import { Box, Typography, Button } from "@mui/material";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/prispevok');
+    }
+  }, [status, router]);
 
   return (
     <Box 
@@ -21,7 +30,7 @@ export default function Home() {
         Vitajte na ZoskaSnap!
       </Typography>
       
-      {!session ? (
+      {!session && (
         <Box display="flex" gap={2}>
           <Button 
             variant="contained"
@@ -43,15 +52,6 @@ export default function Home() {
             Registrovať sa
           </Button>
         </Box>
-      ) : (
-        <Button 
-          variant="contained"
-          component={Link}
-          href="/prispevok"
-          sx={{ backgroundColor: '#D32F2F' }}
-        >
-          Prejsť na príspevky
-        </Button>
       )}
     </Box>
   );

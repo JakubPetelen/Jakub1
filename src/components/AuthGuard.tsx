@@ -12,7 +12,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     // Only redirect to login if we're trying to access a private route
-    if (status === "unauthenticated" && pathname.startsWith('/(private)')) {
+    if (status === "unauthenticated" && pathname && pathname.startsWith('/(private)')) {
       router.push("/auth/prihlasenie")
     }
   }, [status, router, pathname])
@@ -26,7 +26,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   }
 
   // For private routes, only show content if authenticated
-  if (pathname.startsWith('/(private)')) {
+  if (pathname && pathname.startsWith('/(private)')) {
     return status === "authenticated" ? <>{children}</> : null
   }
 
